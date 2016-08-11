@@ -10,7 +10,7 @@ var app = angular.module('communityBoard', ['ui.router']);
 				{author: 'Joe', body: 'Lorem ipsum dolor sit amet.', upvotes: 1},
 				{author: 'Jane', body: 'Lorem ipsum dolor sit amet.', upvotes: 4}
 			 ]},
-			{title:'Post 2', link:"http://www.google.com", content:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet lacus tellus. Nulla nec vehicula turpis, nec posuere leo.", upvotes:2},
+			{title:'Post 2', link:"http://www.google.com", content:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet lacus tellus. Nulla nec vehicula turpis, nec posuere leo.", comments:[], upvotes:2},
 			{title:'Post 3', 
 			 content:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet lacus tellus. Nulla nec vehicula turpis, nec posuere leo.",
 			 upvotes:15,
@@ -19,7 +19,7 @@ var app = angular.module('communityBoard', ['ui.router']);
 				{author: 'Jane', body: 'Lorem ipsum dolor sit amet.', upvotes: 0},
 				{author: 'Jack', body: 'Lorem ipsum dolor sit amet.', upvotes: 0},
 			 ]},
-			{title:'Post 4', content:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet lacus tellus. Nulla nec vehicula turpis, nec posuere leo.", upvotes:9},
+			{title:'Post 4', content:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet lacus tellus. Nulla nec vehicula turpis, nec posuere leo.", comments:[], upvotes:9},
 		]
 	  };
 	  return o;
@@ -82,9 +82,19 @@ app.controller('PostsCtrl', [
 	'posts',
 	function($scope, $stateParams, posts){
 		$scope.post = posts.posts[$stateParams.id];
+		
+		$scope.addComment = function(){
+		  if($scope.body === '') { return; }
+		  $scope.post.comments.push({
+			body: $scope.body,
+			author: $scope.author,
+			upvotes: 0
+		  });
+		  $scope.author = '';
+		  $scope.body = '';
+		};
+		
 		$scope.incrementUpvotes = function(comment) {
 		  comment.upvotes += 1;
 		};
 }]);
-
-
